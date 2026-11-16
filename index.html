@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estación Órbita · Repara los sistemas con HTML, CSS y JavaScript</title>
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<header class="cabecera">
+  <div class="marca">
+    <div class="logo">🛰️</div>
+    <div>
+      <h1>Estación Órbita</h1>
+      <p>Repara los sistemas con HTML, CSS y JavaScript</p>
+    </div>
+  </div>
+
+  <nav class="progreso" id="progreso" aria-label="Misiones"></nav>
+
+  <div class="cabecera-acciones">
+    <button class="btn-icono" id="btnChuleta" title="Chuleta de código">📖</button>
+    <button class="btn-icono" id="btnAyuda" title="Cómo se juega">?</button>
+  </div>
+</header>
+
+<main class="tablero">
+
+  <!-- ===== COLUMNA 1: MISIÓN ===== -->
+  <section class="panel mision">
+    <p class="etiqueta" id="misionNum">Misión 1 de 9</p>
+    <h2 id="misionTitulo">Botón de arranque</h2>
+    <p class="concepto" id="misionConcepto">JavaScript · eventos</p>
+    <div class="mision-texto" id="misionTexto"></div>
+
+    <div class="pistas-caja">
+      <div class="pistas-cab">
+        <span>💡 Pistas</span>
+        <span class="pistas-usadas" id="pistasUsadas">0 / 3</span>
+      </div>
+      <div id="pistasLista" class="pistas-lista"></div>
+      <button class="btn btn-pista" id="btnPista">Dame una pista</button>
+      <button class="btn btn-solucion" id="btnSolucion">🧪 Ver la solución</button>
+    </div>
+  </section>
+
+  <!-- ===== COLUMNA 2: TU PANEL + PRUEBAS ===== -->
+  <section class="panel vista">
+    <div class="vista-cab">
+      <span class="vista-titulo">🖥️ Tu panel</span>
+      <div class="vista-acciones">
+        <button class="btn btn-mini" id="btnReiniciar">↺ Reiniciar vista</button>
+        <button class="btn btn-probar" id="btnProbar">▶ Probar</button>
+      </div>
+    </div>
+
+    <div class="pantalla">
+      <iframe id="preview" title="Vista previa de tu panel" class="lienzo"></iframe>
+    </div>
+    <p class="pista-mano">Puedes hacer clic dentro del panel: es de verdad.</p>
+
+    <div class="pruebas">
+      <div class="pruebas-cab">
+        <span>🔍 Pruebas automáticas</span>
+        <strong id="pruebasResumen">0 / 0</strong>
+      </div>
+      <ul class="lista-pruebas" id="listaPruebas"></ul>
+      <p class="pruebas-nota" id="pruebasNota">Cuando pulses ▶ Probar, la estación hará estas comprobaciones con tu código.</p>
+    </div>
+  </section>
+
+  <!-- ===== COLUMNA 3: EDITOR ===== -->
+  <section class="panel editor-panel">
+    <div class="tabs" id="tabs" role="tablist">
+      <button class="tab" data-archivo="html" role="tab">index.html</button>
+      <button class="tab" data-archivo="css" role="tab">estilos.css</button>
+      <button class="tab" data-archivo="js" role="tab">script.js</button>
+      <span class="tabs-info" id="tabsInfo">3 archivos</span>
+    </div>
+
+    <div class="editor-caja">
+      <div class="gutter" id="gutter">1</div>
+      <textarea id="editor" spellcheck="false" autocomplete="off" autocapitalize="off" wrap="off"
+        aria-label="Editor de código"></textarea>
+    </div>
+
+    <div class="consola-cab">
+      <span>Consola</span>
+      <span class="atajo">se prueba solo · Ctrl + Enter</span>
+    </div>
+    <div class="consola" id="consola" aria-live="polite">
+      <p class="consola-vacia">Aquí verás errores y avisos.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== MODAL ÉXITO ===== -->
+<div class="modal" id="modalExito" role="dialog" aria-modal="true" aria-labelledby="exitoTitulo">
+  <div class="modal-caja">
+    <div class="modal-confeti" id="confeti"></div>
+    <div class="estrellas" id="estrellasModal">⭐⭐⭐</div>
+    <h2 id="exitoTitulo">¡Sistema reparado!</h2>
+    <p id="exitoTexto">Todas las pruebas en verde.</p>
+    <div class="exito-botones">
+      <button class="btn btn-secundario" id="btnRepetir">Quedarme aquí</button>
+      <button class="btn btn-primario" id="btnSiguiente">Siguiente misión →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL SOLUCIÓN ===== -->
+<div class="modal" id="modalSolucion" role="dialog" aria-modal="true" aria-labelledby="solTitulo">
+  <div class="modal-caja modal-ancha">
+    <button class="cerrar" id="btnCerrarSolucion" aria-label="Cerrar">✕</button>
+    <h2 id="solTitulo">La solución, explicada</h2>
+    <div id="solucionCodigo"></div>
+    <p class="solucion-nota" id="solucionNota"></p>
+    <div class="exito-botones">
+      <button class="btn btn-secundario" id="btnCopiarSolucion">📋 Copiar a los archivos</button>
+      <button class="btn btn-primario" id="btnCerrarSolucion2">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL CHULETA ===== -->
+<div class="modal" id="modalChuleta" role="dialog" aria-modal="true" aria-labelledby="chuletaTitulo">
+  <div class="modal-caja modal-ancha">
+    <button class="cerrar" id="btnCerrarChuleta" aria-label="Cerrar">✕</button>
+    <h2 id="chuletaTitulo">📖 Chuleta de la estación</h2>
+    <div id="chuletaContenido"></div>
+  </div>
+</div>
+
+<!-- ===== MODAL AYUDA ===== -->
+<div class="modal" id="modalAyuda" role="dialog" aria-modal="true" aria-labelledby="ayudaTitulo">
+  <div class="modal-caja modal-ancha">
+    <button class="cerrar" id="btnCerrarAyuda" aria-label="Cerrar">✕</button>
+    <h2 id="ayudaTitulo">Cómo se juega</h2>
+    <p class="ayuda-intro">
+      Eres el técnico de la <strong>Estación Órbita</strong>. Cada misión es un sistema averiado que
+      hay que reparar escribiendo <strong>HTML</strong> (la estructura), <strong>CSS</strong> (el aspecto)
+      y <strong>JavaScript</strong> (el comportamiento).
+    </p>
+
+    <h3>La diferencia con otros juegos</h3>
+    <p class="ayuda-intro">
+      Aquí no se trata de escribir algo «parecido» a lo correcto: el juego <strong>ejecuta tu código y
+      lo prueba</strong>. Pulsa los botones, escribe en los campos y comprueba el resultado, como las
+      pruebas automáticas de un programador de verdad.
+    </p>
+
+    <h3>Cómo va la partida</h3>
+    <ul class="ayuda-lista">
+      <li>Escribes en el editor. Tienes <strong>tres archivos</strong>: <code>index.html</code>,
+          <code>estilos.css</code> y <code>script.js</code> (las pestañas de arriba).</li>
+      <li>En la columna central ves <strong>tu panel</strong> funcionando: puedes hacer clic dentro.</li>
+      <li>Debajo están las <strong>pruebas automáticas</strong>: se ponen en verde cuando tu panel hace lo que pide la misión.</li>
+      <li>Se prueba solo (un segundo después de dejar de escribir) o cuando pulses <strong>▶ Probar</strong>
+          / <code>Ctrl + Enter</code>.</li>
+      <li>Cuando todas las pruebas están en verde, misión superada.</li>
+    </ul>
+
+    <h3>Reglas de la casa</h3>
+    <ul class="ayuda-lista">
+      <li>Nada de <code>alert()</code>: en las pruebas quedaría un cuadro de diálogo colgado.</li>
+      <li>El bucle <code>while</code> está desactivado para que la página no se congele.</li>
+      <li>3 pistas por misión. Sin usarlas, ganas ⭐⭐⭐.</li>
+      <li>Tu código y tu progreso se guardan en este navegador.</li>
+    </ul>
+    <button class="btn btn-primario" id="btnCerrarAyuda2">¡A reparar!</button>
+  </div>
+</div>
+
+<script src="juego.js"></script>
+</body>
+</html>
